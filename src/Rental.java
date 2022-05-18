@@ -12,13 +12,32 @@ class Rental {
         return movie;
     }
 
+
     public double getCharge() {
-        return getMovie().getCharge(getDaysRented());
+        double result = 0;
+        switch (getMovie().getPriceCode()) {
+            case Movie.REGULAR:
+                result += 2;
+                if (getDaysRented() > 2)
+                    result += (getDaysRented() - 2) * 1.5;
+                break;
+            case Movie.NEW_RELEASE:
+                result += getDaysRented() * 3;
+                break;
+            case Movie.CHILDRENS:
+                result += 1.5;
+                if (getDaysRented() > 3)
+                    result += (getDaysRented() - 3) * 1.5;
+                break;
+        }
+        return result;
     }
 
     public int getFrequentRenterPoints() {
-        return getMovie().getFrequentRenterPoints(getDaysRented());
+        // add frequent renter points
+        // add bonus for a two day new release rental
+        if ((getMovie().getPriceCode() == Movie.NEW_RELEASE) && getDaysRented() > 1)
+            return 2;
+        return 1;
     }
-
-
 }
